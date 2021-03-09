@@ -1,0 +1,41 @@
+html
+  head
+    link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css")
+    link(rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous")
+    meta(charset="utf-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    style.
+      body {
+        padding: 2vw;
+      }
+  body
+    div(class='tile is-ancestor is-vertical')
+      div(class='tile is-parent')
+        div(class='tile')
+          button(class='button is-info ' onclick='copy("feat")') Feat: A new feature
+      div(class='tile is-parent')
+        div(class='tile')
+          button(class='button is-info ' onclick='copy("fix")') Fix: A bug fix
+      div(class='tile is-parent')
+        div(class='tile')
+          button(class='button is-info ' onclick='copy("refactor")') Refactor: A code change that neither fixes a bug nor adds a feature
+      div(class='tile is-parent')
+        div(class='tile')
+          button(class='button is-info ' onclick='copy("ci")') CI: Changes to our CI configuration files and scripts
+      div(class='tile is-parent')
+        div(class='tile')
+          button(class='button is-info ' onclick='copy("docs")') Docs: Documentation only changes
+      div(class='tile is-parent')
+        div(class='tile')
+          button(class='button is-info ' onclick='copy("build")') Build: Changes that affect the build system or external dependencies
+      div(class='tile is-parent')
+        div(class='tile')
+          button(class='button is-info ' onclick='copy("perf")') Perf: A code change that improves performance
+      div(class='tile is-parent')
+        div(class='tile')
+          button(class='button is-info ' onclick='copy("test")') Test: Adding missing tests or correcting existing tests
+      script.
+        const copy = (commitType) => {
+          navigator.clipboard.writeText(commitType)
+        };

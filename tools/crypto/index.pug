@@ -1,0 +1,62 @@
+html
+  head
+    link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css")
+    link(rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css")
+    meta(charset="utf-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    style.
+      body {
+        padding: 2vw;
+      }
+  body
+    div(class='tile is-ancestor is-vertical')
+      div(class='tile is-parent')
+        div(class='tile')
+          input(type='password' id='password' placeholder='Password' class='input') 
+      div(class='tile is-parent')
+        div(class='tile')
+          div(class='buttons has-addons')
+            button(class='button is-info' onclick='cipher()') 
+              span(class="icon")
+                i(class="fas fa-lock")
+              span Cipher
+            button(class='button is-link' onclick='decipher()')
+              span(class="icon")
+                i(class="fas fa-lock-open")
+              span Decipher
+      div(class='tile is-parent')
+        div(class='tile')
+          textarea(id='text' placeholder='Ciphered/Deciphered Text' class='textarea')
+      script.
+        const cipher = () => {
+          const password = document.getElementById("password").value;
+          const textArea = document.getElementById("text");
+          const xhr = new XMLHttpRequest();
+          xhr.open("POST", '/crypto', true);
+          xhr.setRequestHeader("Content-Type", "application/json");
+          xhr.onreadystatechange = function() { 
+            if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+              const textArea = document.getElementById("text");
+              textArea.value = xhr.response;
+            }
+          };
+          xhr.send(JSON.stringify({"text": textArea.value, "action": 'cipher', password}));
+        }
+
+        const decipher = () => {
+          const password = document.getElementById("password").value;
+          const textArea = document.getElementById("text");
+          const xhr = new XMLHttpRequest();
+          xhr.open("POST", '/crypto', true);
+          xhr.onreadystatechange = function() { 
+            if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+              const textArea = document.getElementById("text");
+              textArea.value = xhr.response;
+            }
+          };
+          xhr.send(JSON.stringify({"text": textArea.value, "action": 'decipher', password}));
+        }
+
+      
+        
+

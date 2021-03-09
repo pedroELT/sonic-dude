@@ -1,0 +1,71 @@
+html
+  head
+    link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css")
+    meta(charset="utf-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    script(src="https://cdn.jsdelivr.net/npm/jsoneditor@9.1.10/dist/jsoneditor.min.js")
+    link(href="https://cdn.jsdelivr.net/npm/jsoneditor@9.1.10/dist/jsoneditor.min.css"  rel="stylesheet" type="text/css")
+    style.
+      body {
+        padding: 2vw;
+      }
+  body  
+    div(class='tile is-ancestor is-vertical')
+      div(class='tile is-parent')
+        div(class='tile')
+          input(type='password' id='password' placeholder='Encryption key' class='input')
+      div(class='tile is-parent')
+        div(class='tile is-full')
+          div(id='configuration' class='container resizable ')
+      div(class='tile is-parent')
+        div(class='tile')
+          div(class='buttons has-addons')
+            button(class='button is-info' onclick='load()') 
+              span(class="icon")
+                i(class="fas fa-arrow-up")
+              span Load
+            button(class='button is-link' onclick='save()')
+              span(class="icon")
+                i(class="fas fa-arrow-down")
+              span Save
+      
+    script.
+      const containerConf = document.getElementById("configuration")
+      const options = {
+        mode: 'code',
+        modes: ['code', 'form', 'text', 'tree'],
+      }
+      const configuration = new JSONEditor(containerConf, options)
+
+      // set json
+      const initialJson = !{data || JSON.stringify({})};
+      configuration.set(initialJson);
+
+      // get json
+      // const updatedJson = editor.get()
+
+      const save = () => {
+        const password = document.getElementById("password").value;;
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", '/configuration', true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function() { 
+          if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+            // editor.set(JSON.parse(xhr.response));
+          }
+        };
+        const data = {password, configuration: configuration.get()};
+        xhr.send(JSON.stringify(data));
+      }
+
+      const load = () => {
+        const password = document.getElementById("password").value;
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", '/configuration', true);
+        xhr.onreadystatechange = function() { 
+          if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+            configuration.set(JSON.parse(xhr.response));
+          }
+        };
+        xhr.send(password);
+      }

@@ -1,0 +1,24 @@
+html
+  head
+    script(src="https://cdn.jsdelivr.net/npm/jsoneditor@9.1.10/dist/jsoneditor.min.js")
+    link(href="https://cdn.jsdelivr.net/npm/jsoneditor@9.1.10/dist/jsoneditor.min.css"  rel="stylesheet" type="text/css")
+    style.
+      body {
+        padding: 2vw;
+      }
+  body  
+    div(id='editor')
+    script.
+      const containerJson = document.getElementById("editor")
+      const options = {
+        mode: 'code',
+        modes: ['code', 'form', 'text', 'tree'],
+      }
+      const editor = new JSONEditor(containerJson, options)
+
+      // set json
+      const initialJson = !{data || JSON.stringify({})};
+      editor.set(initialJson)
+
+      // get json
+      // const updatedJson = editor.get()

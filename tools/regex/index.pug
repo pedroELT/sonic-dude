@@ -1,0 +1,40 @@
+html
+  head
+    link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css")
+    meta(charset="utf-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    style.
+      body {
+        padding: 2vw;
+      }
+  body
+    div(class='tile is-ancestor is-vertical')
+      div(class='tile is-parent')
+        div(class='tile')
+          a(href='https://developer.mozilla.org/fr/docs/Web/JavaScript/Guide/Expressions_r%C3%A9guli%C3%A8res' class='link' target="_blank") Documentation
+      div(class='tile is-parent')
+        div(class='tile')
+          input(type='text' id='regex' onchange="update()" placeholder='Regex' class='input')
+      div(class='tile is-parent')
+        div(class='tile')
+          textarea(id='text' onchange="update()"  placeholder='Searched Text' class='textarea')
+      div(class='tile is-parent')
+        div(class='tile')
+          button(class='button is-info' onclick='update()') Analyse
+      div(class='tile is-parent')
+        div(class='tile')
+          p(id='result' style='white-space: pre;text-transform: none; overflow:auto;')
+      script.
+        const update = () => {
+          const regexStr = document.getElementById('regex').value;
+          const text = document.getElementById('text');
+          const result = document.getElementById('result');
+          if (regex && text.value) {
+            const regex = new RegExp(regexStr, 'gm');
+            result.innerHTML = text.value.replace(regex, `<mark>$&</mark>`);
+          }
+        }
+
+      
+        
+

@@ -1,0 +1,25 @@
+html
+  head
+    link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css")
+    link(rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css")
+    meta(charset="utf-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    style.
+      body {
+        padding: 2vw;
+      }
+  body
+    div(class='tile is-ancestor is-vertical')
+      div(class='tile is-parent')
+        div(class='tile')
+          input(class='button' id="image" type="file" accept=".jpg,.jpeg,.png,.svg,.gif" onchange="display()")
+      div(class='tile is-parent')
+        div(class='tile is-full')
+          img(id='result' alt='' class='container resizable ')
+    script.
+      const display = () => {
+          const image = document.getElementById('image');
+          const result = document.getElementById('result');
+          result.src = window.URL.createObjectURL(image.files[0]);
+
+      }

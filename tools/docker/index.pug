@@ -1,0 +1,68 @@
+html
+  head
+    link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css")
+    meta(charset="utf-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    script(src="https://cdn.jsdelivr.net/npm/jsoneditor@9.1.10/dist/jsoneditor.min.js")
+    link(href="https://cdn.jsdelivr.net/npm/jsoneditor@9.1.10/dist/jsoneditor.min.css"  rel="stylesheet" type="text/css")
+    style.
+      body {
+        padding: 2vw;
+      }
+
+      .resizable {
+        overflow: scroll;
+        resize: both;
+        display:flex; 
+        min-height: 40vh;
+        margin: 1vh;
+      }
+  body
+    div(class='tile is-ancestor is-vertical')
+      div(class='tile is-parent')
+        div(class='tile')
+          input(type='text' id='container' onchange="query()" placeholder='Container' class='input')
+      div(class='tile is-parent')
+        div(class='tile')
+          div(class='select')
+            select(id='action')
+              option(value="all") Display All
+              option(value="stop-all") Stop All
+              option(value="start") Start Container
+              option(value="stop") Stop Container
+              option(value="delete") Delete Container
+      div(class='tile is-parent')
+        div(class='tile')
+          button(class='button is-info' onclick='query()') Do
+      div(class='tile is-parent')
+        div(class='tile is-full')
+          pre(id='result' class='resizable container')
+            #{containers}
+    script.
+      const query = () => {
+        const container = document.getElementById('container').value;
+        const action = document.getElementById('action').value;
+        
+        if (container, action) {
+          executeQuery(container, action);
+        }
+      };
+
+      const executeQuery = (container, action) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", '/docker', true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function() { 
+          if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+            const result = document.getElementById("result");
+            result.innerHTML = xhr.response;
+            //editor.set(JSON.parse(xhr.response));
+          }
+        };
+        const data = {container, action};
+        xhr.send(JSON.stringify(data));
+      };
+
+      
+        
+

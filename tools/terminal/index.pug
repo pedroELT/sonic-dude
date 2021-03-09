@@ -1,0 +1,45 @@
+html
+  head
+    link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css")
+    link(rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css")
+    meta(charset="utf-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    style.
+      body {
+        padding: 2vh;
+      }
+  body
+    div(class='tile is-ancestor is-vertical')
+      div(class='tile is-parent')
+        div(class='tile')
+          input(type='text' id='command' placeholder='Command' class='input') 
+      div(class='tile is-parent')
+        div(class='tile')
+          button(class='button is-info' onclick='execute()') 
+              span(class="icon")
+                i(class="fas fa-exchange")
+              span Execute
+      div(class='tile is-parent')
+        div(class='tile')
+          textarea(id='logs' class='textarea')
+      script.
+        const execute = () => {
+          const command = document.getElementById('command').value;
+          const logs = document.getElementById('logs');
+          const xhr = new XMLHttpRequest();
+          xhr.open("POST", '/terminal', true);
+          xhr.setRequestHeader("Content-Type", "application/json");
+          xhr.onreadystatechange = function() { 
+            console.log(xhr.response);
+            if (this.readyState === 3) {
+              logs.value = xhr.response;
+            }
+          };
+          xhr.send(JSON.stringify({command}));
+        };
+    
+   
+      
+          
+        
+      

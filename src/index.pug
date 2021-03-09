@@ -1,0 +1,149 @@
+html
+  head
+    link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css")
+    link(rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css")
+    meta(charset="utf-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    style.
+      body {
+        padding: 2vh;
+      }
+      .resizable {
+        overflow: hidden;
+        resize: both;
+        display:flex; 
+        min-height: 40vh;
+        margin: 1vh;
+      }
+      iframe {
+        width: 100%;
+        z-index: 1;
+        overflow: auto;
+        resize: both; 
+        flex-grow:1;
+      }
+      .title-tile {
+        max-height:6vh;
+        min-height:50px;
+      }
+      .draggable {
+        cursor: move;
+      }
+      .hide {
+        display: none;
+      }
+      .tool {
+        min-width: 400px;
+      }
+      .logo {
+        max-width: 5vw;
+        max-height: 5vh;
+      }
+    script.
+      const saveConfiguration = () => {
+
+      }
+  body
+    div(class="block media")
+      div(class='media-left')
+        img.logo(src='./logo.png')
+      div(class='media-content')
+        span.title Tool dude
+      div(class='media-right')
+          a(class='button is-success' href='/tools')
+            span(class="icon")
+              i(class="fas fa-plus")
+      
+              
+    div(class="block notification") 
+      div(class="columns is-centered") 
+        each tool, toolName in tools
+          div(class='column')
+            label(class="checkbox") 
+              input(type='checkbox' name=toolName checked onclick='handleToolChecked(this);')
+              span #{tool.description}
+              
+            
+    script.
+      function handleToolChecked(cb) {
+        const toolContent = document.getElementById(cb.name);
+        if (cb.checked) {
+          toolContent.classList.remove('hide');
+        } else {
+          toolContent.classList.add('hide');
+        }
+      }
+    
+    div(class='block columns is-multiline dragContainer')
+      each tool, toolName in tools
+        div(class='column notification draggable tool resizable '+ (tool.width ? tool.width : 'is-one-quarter') draggable="true" id=toolName)
+          div(class='tile is-ancestor is-vertical' style='margin:1vh;')
+              div(class='tile is-parent title-tile')
+                div(class='tile is-10')
+                    p(class='content subtitle') #{tool.description}
+                div(class='tile')
+                  button(class='button' title="Reload tool" onclick='reload("'+toolName+'")')
+                    span(class='icon')
+                      i(class='fa fa-redo')
+                  a(class='button' href="/"+toolName target="_blank"  title="Open standalone tool")
+                    span(class='icon')
+                      i(class='fa fa-external-link-alt')
+              div(class='tile is-parent')
+                div(class='tile')
+                  iframe(src="/"+toolName id=toolName+'Frame')
+    script.
+      const reload = (frameId) => {
+        document.getElementById(frameId+'Frame').contentWindow.location.reload(true);
+      }
+
+      let dragSrcEl = null;
+      
+      function handleDragStart(e) {
+        this.style.opacity = '0.4';
+    
+        dragSrcEl = this;
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/html', this.innerHTML);
+      }
+
+      function handleDragOver(e) {
+        if (e.preventDefault) {
+          e.preventDefault();
+        }
+
+        e.dataTransfer.dropEffect = 'move';
+        
+        return false;
+      }
+
+      function handleDrop(e) {
+        if (e.stopPropagation) {
+          e.stopPropagation();
+        }
+        
+        if (dragSrcEl != this) {
+          const oldId = this.id;
+          dragSrcEl.innerHTML = this.innerHTML;
+          this.id = dragSrcEl.id;
+          dragSrcEl.id = oldId;
+          this.innerHTML = e.dataTransfer.getData('text/html');
+        }
+        
+        return false;
+      }
+
+      function handleDragEnd(e) {
+        this.style.opacity = '1';
+      }
+
+      let items = document.querySelectorAll('.draggable');
+      items.forEach((item) => {
+        item.addEventListener('dragstart', handleDragStart, false);
+        item.addEventListener('drop', handleDrop, false);
+        item.addEventListener('dragover', handleDragOver, false);
+        item.addEventListener('dragend', handleDragEnd, false);
+      });
+      
+          
+        
+      

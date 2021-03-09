@@ -1,0 +1,40 @@
+html
+  head
+    link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css")
+    link(rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous")
+    meta(charset="utf-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    style.
+      body {
+        padding: 2vw;
+      }
+  body
+    div(class='container')
+      div(class='buttons has-addons')
+        button(class='button is-info' onclick='generate()') Generate
+        button(class='button is-link ' onclick='copy()')
+          span(id='password' style='padding-right:1vw;')
+          i(class='fa fa-copy')
+      script.
+        const generate = () => {
+          const xhr = new XMLHttpRequest();
+          xhr.open("POST", '/password', true);
+          xhr.setRequestHeader("Content-Type", "application/json");
+          xhr.onreadystatechange = function() { 
+            console.log(xhr.response);
+            if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+              const password = document.getElementById('password');
+              password.textContent = xhr.response;
+              console.log(xhr.response);
+            }
+          };
+          const data = {};
+          xhr.send(JSON.stringify(data));
+        };
+
+        const copy = () => {
+          const password = document.querySelector("#password").textContent;
+           navigator.clipboard.writeText(password)
+        };
+      

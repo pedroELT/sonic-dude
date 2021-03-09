@@ -1,0 +1,87 @@
+html
+  head
+    link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css")
+    meta(charset="utf-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    script(src="https://cdn.jsdelivr.net/npm/jsoneditor@9.1.10/dist/jsoneditor.min.js")
+    link(href="https://cdn.jsdelivr.net/npm/jsoneditor@9.1.10/dist/jsoneditor.min.css"  rel="stylesheet" type="text/css")
+    style.
+      body {
+        padding: 2vw;
+      }
+
+      .resizable {
+        overflow: hidden;
+        resize: both;
+        display:flex; 
+        min-height: 40vh;
+        margin: 1vh;
+      }
+  body
+    div(class='tile is-ancestor is-vertical')
+      div(class='tile is-parent')
+        div(class='tile')
+          input(type='text' id='url' onchange="update()" placeholder='URL' class='input')
+      div(class='tile is-parent')
+        div(class='tile')
+          input(type='text' id='collection' onchange="update()" placeholder='Collection' class='input')
+      div(class='tile is-parent')
+        div(class='tile')
+          div(class='select')
+            select(id='action')
+              option(value="find") Find
+              option(value="insert") Insert One
+              option(value="delete") Delete One
+              option(value="drop") Drop Collection
+      div(class='tile is-parent')
+        div(class='tile')
+          div(id='data' class='container resizable')
+      div(class='tile is-parent')
+        div(class='tile')
+          button(class='button is-info' onclick='update()') Query
+      div(class='tile is-parent')
+        div(class='tile is-full')
+          div(id='result' class='container resizable ')
+    script.
+      const containerResult = document.getElementById("result");
+      const containerData = document.getElementById("data");
+      const options = {
+        mode: 'code',
+        modes: ['code', 'form', 'text', 'tree'],
+      }
+      const editor = new JSONEditor(containerResult, options);
+
+      const dataEditor = new JSONEditor(containerData, options);
+      
+      
+      const initialJson = {};
+      editor.set(initialJson)
+      dataEditor.set(initialJson)
+
+
+      const update = () => {
+        const url = document.getElementById('url').value;
+        const collection = document.getElementById('collection').value;
+        const action = document.getElementById('action').value;
+        console.log(url, collection, action, dataEditor.get());
+        if (url && collection && action && dataEditor.get()) {
+          executeQuery(url, collection, action, dataEditor.get());
+        }
+      };
+
+      const executeQuery = (url, collection, action, query) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", '/mongo', true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function() { 
+          if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+            editor.set(JSON.parse(xhr.response));
+          }
+        };
+        const data = {url, collection, action, query};
+        xhr.send(JSON.stringify(data));
+      };
+
+      
+        
+
