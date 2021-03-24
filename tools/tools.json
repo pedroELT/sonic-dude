@@ -1,7 +1,7 @@
 {
-    "notes": {
-        "description": "Notes on topics",
-        "disabled": false
+    "docker": {
+        "description": "Docker",
+        "width": "is-one-third"
     },
     "json": {
         "description": "JSON editor",
@@ -10,12 +10,6 @@
     "regex": {
         "description": "Regex editor",
         "width": "is-one-quarter"
-    },
-    "base64": {
-        "description": "Base 64 encode/decode"
-    },
-    "password": {
-        "description": "Password generator"
     },
     "commit-type": {
         "description": "Commit types"
@@ -30,21 +24,8 @@
         "description": "HTTP Request",
         "disabled": true
     },
-    "mdToPdf": {
-        "description": "Markdown to PDF converter"
-    },
-    "docker": {
-        "description": "Docker"
-    },
     "configuration": {
         "description": "View And Edit Personnal configuration file"
-    },
-    "kubernetes-context": {
-        "description": "View and choose Kubernetes Context",
-        "disabled": true
-    },
-    "image-to-html": {
-        "description": "Convert Image to HTML Display as URL // TODO need test and debug"
     },
     "crypto": {
         "description": "Cypher/Decipher aes-256-ctr text"
@@ -57,11 +38,6 @@
         "description": "Transform HTML code to Pug code"
     },
     "terminal": {
-        "description": "HTML Terminal",
-        "disabled": false
-    },
-    "file-share": {
-        "description": "Share file over ngrok",
-        "disabled": false
+        "description": "HTML Terminal"
     }
 }
