@@ -22,4 +22,4 @@ For Each Tool
 ## Dashboard Next Features
 
 - blue background on focus
-- configure tools
+- configure tools 
